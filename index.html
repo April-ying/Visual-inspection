@@ -1,80 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>簡單繪圖應用</title>
-    <style>
-        canvas {
-            border: 1px solid #000;
-        }
-    </style>
-</head>
-<body>
+<html>
+    <head>
+        <title></title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale, minimum-scale=1,minimum-scale=1,user-scalable=no" />
+        <style>
+            body{
+                font-family: Arial, Helvetica, sans-serif;
 
-<canvas id="drawingCanvas" width="500" height="500"></canvas>
+            }
 
-<script>
-    // 取得 canvas 元素
-    var canvas = document.getElementById('drawingCanvas');
-    var context = canvas.getContext('2d');
+            #signatureArea{
+                width: 100%;
+                height: 300px;
+                border: 1px solid #ccc;
+                margin-bottom: 20px;
+            }
 
-    // 設定初始狀態
-    var isDrawing = false;
+            button{
+                padding: 10px 20px;
+                font-size: 16px;
+                background-color: #4CAF50;
+                color: white;
+                border: white;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+            button:hover{
+                background-color: #45a049;
+            }
 
-    // 設定觸控和滑鼠事件
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('touchstart', startDrawing);
+        </style>
+    </head>
 
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('touchmove', draw);
+    <body>
+        <div id="signatureArea"></div>
+        <button id="clearButton">清除</button>
+        <script type="text/javascript">
 
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseleave', stopDrawing);
-    canvas.addEventListener('touchend', stopDrawing);
+    //DOM
+    var signatureArea=document.getElementById('signatureArea');
+    var clearButton=document.getElementById('clearButton');
 
-    // 開始繪圖
-    function startDrawing(e) {
-        isDrawing = true;
-        draw(e);  // 避免在移動前有斷線的情況
+    var isDrawing=false;//是否正在繪製
+    var lastX,lastY;//上一個觸摸點的座標
+
+    var drawingCanvas=document.createElement('canvas');//用於簽名
+    var backgroundCanvas=document.createElement('canvas');//保存帶有背景的簽名
+    var drawingCtx=drawingCanvas.getContext('2d');
+    var backgroundCtx=backgroundCanvas.getContext('2d');
+    drawingCanvas.width=signatureArea.offsetWidth;
+    drawingCanvas.height=signatureArea.offsetHeight;
+    backgroundCanvas.width=drawingCanvas.width;
+    backgroundCanvas.height=drawingCanvas.height;
+
+    //觸摸事件
+    function startDrawing(e){
+        e.preventDefault();
+        var touch =e.touches[0];
+        var rect=signatureArea.getBoundingClientRect();
+        lastX=touch.clientX - rect.left;
+        lastY=touch.clientY - rect.top;
+        isDrawing=true;
     }
 
-    // 繪圖
-    function draw(e) {
-        if (!isDrawing) return;
-
-        // 設定線條樣式
-        context.lineWidth = 5;
-        context.lineCap = 'round';
-        context.strokeStyle = 'black';
-
-        // 獲取觸控或滑鼠位置
-        var x, y;
-        if (e.touches) {
-            x = e.touches[0].clientX - canvas.offsetLeft;
-            y = e.touches[0].clientY - canvas.offsetTop;
-        } else {
-            x = e.clientX - canvas.offsetLeft;
-            y = e.clientY - canvas.offsetTop;
-        }
-
-        // 開始繪製路徑
-        context.beginPath();
-        context.moveTo(x, y);
-
-        // 繪製至新位置
-        context.lineTo(x, y);
-
-        // 繪製路徑
-        context.stroke();
+    //繪製中
+    function draw(e){
+        if(!isDrawing) return;
+        var touch = e.touches[0];
+        var rect =e.touches[0];
+        var rect=signatureArea.getBoundingClientRect();
+        var x=touch.clientX - rect.left;
+        var y=touch.clientY - rect.top;
+        drawLine(lastX,lastY,x,y);
+        lastX=x;
+        lastY=y;
     }
 
-    // 結束繪圖
-    function stopDrawing() {
-        isDrawing = false;
-        context.closePath();
+    //停止繪製
+    function drawLine(x1,y1,x2,y2){
+        drawingCtx.beginPath();
+        drawingCtx.moveTo(x1,y1);
+        drawingCtx.lineTo(x2,y2);
+        drawingCtx.lineWidth=1;
+        drawingCtx.strokeStyle='#000';
+        drawingCtx.stroke();
     }
-</script>
 
-</body>
+    //清除
+    function clearSignature(){
+        //繪製白色背景
+        backgroundCtx.fillStyle='white';
+        backgroundCtx.fillRect(0,0,backgroundCanvas.width,backgroundCanvas.height);
+
+    }
+
+    //複製繪製的簽名到帶有白色背景的畫布
+    backgroundCtx.drawImage(drawingCanvas,0,0);
+
+    //將帶有白色背景的畫布內容轉為PNG格式的DataURL
+    //var dataURL=backgroundCanvas.toDataURL("image/png");
+
+    //將canvas元素插入DOM
+    signatureArea.appendChild(drawingCanvas);
+        </script>
+    </body>
 </html>
