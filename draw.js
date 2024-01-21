@@ -13,7 +13,7 @@ let x2= 0
 let y2= 0
 
 // 宣告一個 hasTouchEvent 變數，來檢查是否有 touch 的事件存在
-const hasTouchEvent = 'ontouchstart' in window ? true : false
+const hasTouchEvent = 'touchstart' in window ? true : false
 
 // 透過上方的 hasTouchEvent 來決定要監聽的是 mouse 還是 touch 的事件
 const downEvent = hasTouchEvent ? 'touchstart' : 'mousedown'
