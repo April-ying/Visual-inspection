@@ -3,71 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>觸控畫圖工具</title>
+    <title>數學家法題目</title>
     <style>
-        canvas {
-            border: 1px solid #000;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #question-container {
+            width: 70%;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        #answer-container {
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: center;
+        }
+
+        #answer-input {
+            width: 80%;
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        #sync-button {
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-<canvas id="drawingCanvas" width="500" height="500"></canvas>
+<div id="question-container">
+    <h2>數學家法題目</h2>
+    <p id="question">42 + 17 = ?</p>
+</div>
+
+<div id="answer-container">
+    <input type="text" id="answer-input" placeholder="輸入答案">
+    <button id="sync-button" onclick="syncAnswer()">同步答案</button>
+</div>
 
 <script>
-    // 取得 canvas 元素
-    var canvas = document.getElementById('drawingCanvas');
-    var context = canvas.getContext('2d');
+    function syncAnswer() {
+        var answerInput = document.getElementById('answer-input');
+        var answer = answerInput.value;
 
-    // 設定觸控事件
-    canvas.addEventListener('touchstart', startDrawing);
-    canvas.addEventListener('touchmove', draw);
-    canvas.addEventListener('touchend', stopDrawing);
+        // 將答案顯示在電腦螢幕上
+        var answerDisplay = document.createElement('p');
+        answerDisplay.innerHTML = '您的答案：' + answer;
+        document.getElementById('question-container').appendChild(answerDisplay);
 
-    // 設定繪圖參數
-    var isDrawing = false;
-    var lineCoordinates = [];
+        // 將答案同步顯示在手機螢幕上（這裡使用 alert 模擬）
+        alert('手機上的答案：' + answer);
 
-    // 開始繪圖
-    function startDrawing(e) {
-        isDrawing = true;
-        draw(e);  // 避免在移動前有斷線的情況
-    }
-
-    // 繪圖
-    function draw(e) {
-        e.preventDefault(); // 防止滾動
-
-        if (!isDrawing) return;
-
-        // 設定線條樣式
-        context.lineWidth = 5;
-        context.lineCap = 'round';
-        context.lineJoin = 'round';
-        context.strokeStyle = 'black';
-
-        // 取得觸控位置
-        var x = e.touches[0].clientX - canvas.offsetLeft;
-        var y = e.touches[0].clientY - canvas.offsetTop;
-
-        // 將座標紀錄到軌跡陣列
-        lineCoordinates.push({ x, y });
-
-        // 開始繪製路徑
-        context.beginPath();
-        context.moveTo(lineCoordinates[0].x, lineCoordinates[0].y);
-
-        // 繪製連續的線段
-        for (var i = 1; i < lineCoordinates.length; i++) {
-            context.lineTo(lineCoordinates[i].x, lineCoordinates[i].y);
-            context.stroke();
-        }
-    }
-
-    // 結束繪圖
-    function stopDrawing() {
-        isDrawing = false;
-        lineCoordinates = []; // 清空軌跡座標陣列，以便下次繪製
+        // 清空答案輸入欄位
+        answerInput.value = '';
     }
 </script>
 
