@@ -16,11 +16,14 @@ let y2= 0
 const hasTouchEvent = 'touchstart' in window ? true : false
 
 // 透過上方的 hasTouchEvent 來決定要監聽的是 mouse 還是 touch 的事件
-const downEvent = hasTouchEvent ? 'touchstart' : 'mousedown'
-const moveEvent = hasTouchEvent ? 'touchmove' : 'mousemove'
-const upEvent = hasTouchEvent ? 'touchend' : 'mouseup'
-
+//const downEvent = hasTouchEvent ? 'touchstart' : 'mousedown'
+//const moveEvent = hasTouchEvent ? 'touchmove' : 'mousemove'
+//const upEvent = hasTouchEvent ? 'touchend' : 'mouseup'
+const downEvent ='touchstart'
+const moveEvent ='touchmove'
+const upEvent ='touchend'
 // 宣告 isMouseActive 為滑鼠點擊的狀態，因為我們需要滑鼠在 mousedown 的狀態時，才會監聽 mousemove 的狀態
+
 let isMouseActive = false
 
 canvas.addEventListener(downEvent, function(e){
@@ -29,8 +32,8 @@ canvas.addEventListener(downEvent, function(e){
 
 canvas.addEventListener(downEvent, function(e){
   isMouseActive = true  
-  x1 = e.offsetX
-  y1 = e.offsetY
+  x1 = e.clientX
+  y1 = e.clientY
 
   ctx.lineWidth = 5
   ctx.lineCap = 'round'
@@ -43,8 +46,8 @@ canvas.addEventListener(moveEvent, function(e){
         return
       }
       // 取得終點座標
-      x2 = e.offsetX
-      y2 = e.offsetY
+      x2 = e.clientX
+      y2 = e.clientY
       
       // 開始繪圖
       ctx.beginPath()
