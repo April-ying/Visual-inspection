@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>數學家法題目</title>
+    <title>同步網頁</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -43,8 +43,8 @@
 <body>
 
 <div id="question-container">
-    <h2>數學家法題目</h2>
-    <p id="question">42 + 17 = ?</p>
+    <h2>同步網頁範例</h2>
+    <p id="question">這是一個同步網頁的範例。</p>
 </div>
 
 <div id="answer-container">
@@ -53,6 +53,15 @@
 </div>
 
 <script>
+    // WebSocket 連線
+    const socket = new WebSocket('ws://localhost:3000'); // 請根據實際伺服器設定修改 URL
+
+    // 處理 WebSocket 事件
+    socket.addEventListener('message', function (event) {
+        // 在手機上顯示收到的訊息（這裡使用 alert 模擬）
+        alert('手機上的訊息：' + event.data);
+    });
+
     function syncAnswer() {
         var answerInput = document.getElementById('answer-input');
         var answer = answerInput.value;
@@ -62,8 +71,8 @@
         answerDisplay.innerHTML = '您的答案：' + answer;
         document.getElementById('question-container').appendChild(answerDisplay);
 
-        // 將答案同步顯示在手機螢幕上（這裡使用 alert 模擬）
-        alert('手機上的答案：' + answer);
+        // 將答案同步發送到手機
+        socket.send(answer);
 
         // 清空答案輸入欄位
         answerInput.value = '';
