@@ -141,8 +141,8 @@ backgroundButton.addEventListener("change", () => {
 //Clear
 clearButton.addEventListener("click", () => {
   context.clearRect(0, 0, canvas.width, canvas.height);
-  canvas.style.backgroundColor = "#fff";
-  backgroundButton.value = "#fff";
+  canvas.style.backgroundColor = "#000000";
+  backgroundButton.value = "#000000";
 });
 
 window.onload = init();
