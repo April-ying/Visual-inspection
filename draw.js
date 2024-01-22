@@ -1,5 +1,3 @@
-
-
 // Canvas DOM 元素 
 const canvas = document.getElementById('canvas')
 const ctx = canvas.getContext('2d')
