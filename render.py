@@ -8,7 +8,7 @@ def hello():
     return "Hello, World!"
 @app.route('/index')
 def index():
-    return app_template('index.html')
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run()
