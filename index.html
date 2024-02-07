@@ -3,81 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>同步網頁</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        #question-container {
-            width: 70%;
-            margin: 50px auto;
-            text-align: center;
-        }
-
-        #answer-container {
-            width: 100%;
-            position: fixed;
-            bottom: 0;
-            background-color: #f0f0f0;
-            padding: 10px;
-            text-align: center;
-        }
-
-        #answer-input {
-            width: 80%;
-            padding: 5px;
-            font-size: 16px;
-        }
-
-        #sync-button {
-            padding: 5px 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-    </style>
+    <title>網站主頁</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<div id="question-container">
-    <h2>同步網頁範例</h2>
-    <p id="question">這是一個同步網頁的範例。</p>
-</div>
-
-<div id="answer-container">
-    <input type="text" id="answer-input" placeholder="輸入答案">
-    <button id="sync-button" onclick="syncAnswer()">同步答案</button>
-</div>
-
-<script>
-    // WebSocket 連線
-    const socket = new WebSocket('https://april-ying.github.io/Visual-inspection/'); // 請根據實際伺服器設定修改 URL
-
-    // 處理 WebSocket 事件
-    socket.addEventListener('message', function (event) {
-        // 在手機上顯示收到的訊息（這裡使用 alert 模擬）
-        alert('手機上的訊息：' + event.data);
-    });
-
-    function syncAnswer() {
-        var answerInput = document.getElementById('answer-input');
-        var answer = answerInput.value;
-
-        // 將答案顯示在電腦螢幕上
-        var answerDisplay = document.createElement('p');
-        answerDisplay.innerHTML = '您的答案：' + answer;
-        document.getElementById('question-container').appendChild(answerDisplay);
-
-        // 將答案同步發送到手機
-        socket.send(answer);
-
-        // 清空答案輸入欄位
-        answerInput.value = '';
-    }
-</script>
-
+    <div class="main-container">
+        <h1>歡迎來到我的網站</h1>
+        <p>請選擇您的設備：</p>
+        <a href="image.html" class="button">電腦 - 顯示圖片</a>
+        <a href="next.html" class="button">手機 - 切換下一張</a>
+    </div>
 </body>
 </html>
