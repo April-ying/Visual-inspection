@@ -1,23 +1,25 @@
+<!-- next_socketio.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>切換下一張圖片</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Switch to Next Image</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        function confirmNextImage() {
+            // Add logic to confirm the switch to the next image
+            socket.emit('confirm_next_image');
+        }
+    </script>
 </head>
 <body>
     <div class="next-button-container">
-        <!-- 切換下一張圖片的按鈕 -->
-        <button onclick="nextImage()">下一張圖片</button>
+        <!-- Button to switch to the next image -->
+        <button onclick="confirmNextImage()">Confirm to switch to the next image</button>
     </div>
-
-    <script>
-        function nextImage() {
-            // 在這裡處理切換下一張圖片的邏輯
-            // 這裡只是簡單地示範，假設切換到下一張圖片的URL是image2.html
-            window.location.href = "image.html";
-        }
-    </script>
 </body>
 </html>

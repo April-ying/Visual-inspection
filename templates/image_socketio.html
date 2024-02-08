@@ -3,13 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>顯示圖片</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Display Image</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        socket.on('redirect', function(data) {
+            window.location.href = data.url;
+        });
+
+        socket.on('update_image', function(data) {
+            document.getElementById('image').src = data.image_url;
+        });
+
+        socket.on('wait_for_confirmation', function(data) {
+            // Add logic for displaying a message or waiting indicator
+            alert('Please confirm to switch to the next image');
+        });
+        
+        function confirmNextImage() {
+            // Add logic to confirm the switch to the next image
+            socket.emit('confirm_next_image');
+        }
+    </script>
 </head>
 <body>
     <div class="image-container">
-        <!-- 圖片 -->
-        <img src="image1.jpg" alt="圖片1">
+        <!-- Image -->
+        <img id="image" src="{{ current_image }}" alt="Image">
     </div>
 </body>
 </html>
